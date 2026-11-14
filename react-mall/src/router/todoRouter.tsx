@@ -1,8 +1,13 @@
 import { lazy, Suspense } from "react";
+import { Navigate } from "react-router";
 
 const TodoIndex = lazy(() => import("../pages/todo/indexPage"));
 const TodoList = lazy(() => import("../pages/todo/listPage"));
 const TodoRead = lazy(() => import("../pages/todo/readPage"));
+const TodoAdd = lazy(() => import("../pages/todo/addPage"));
+const TodoModify = lazy(() => import("../pages/todo/modifyPage"));
+
+
 const Loading = () => <div>Todo Loading....</div>;
 
 export default function todoRouter() {
@@ -17,6 +22,18 @@ export default function todoRouter() {
             {
                 path: "read/:tno",
                 element: <Suspense fallback={<Loading />}><TodoRead /></Suspense>,
+            },
+            {
+                path: "add",
+                element: <Suspense fallback={<Loading />}><TodoAdd /></Suspense>,
+            },
+            {
+                path: "modify/:tno",
+                element: <Suspense fallback={<Loading />}><TodoModify /></Suspense>,
+            },
+            {
+                index: true,
+                element: <Navigate to="/todo/list" replace />,
             },
         ],
     };
