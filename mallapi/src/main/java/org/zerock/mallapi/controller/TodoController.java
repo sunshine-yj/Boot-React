@@ -23,7 +23,7 @@ public class TodoController {
         return service.get(tno);
     }
 
-    @GetMapping("/list")   // ?page=2&size=10 이 PageRequestDTO에 자동으로 담김
+    @GetMapping("/list")
     public PageResponseDTO<TodoDTO> list(PageRequestDTO pageRequestDTO) {
         log.info(pageRequestDTO);
         return service.list(pageRequestDTO);

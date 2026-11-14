@@ -1,7 +1,10 @@
+import AddComponent from "../../components/todo/addComponent";
+
 function AddPage() {
     return (
-        <div className="w-full bg-white">
-            <div className="text-4xl">Todo Add Page</div>
+        <div className="w-full bg-white p-4">
+            <div className="text-3xl font-extrabold">Todo Add Page</div>
+            <AddComponent />
         </div>
     );
 }

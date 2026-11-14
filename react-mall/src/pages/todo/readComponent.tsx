@@ -40,7 +40,6 @@ function ReadComponent({ tno }: { tno: number }) {
     );
 }
 
-// 라벨 + 값 한 줄 (교안의 makeDiv)
 function Row({ label, value }: { label: string; value: string | number }) {
     return (
         <div className="mb-3 flex w-full">

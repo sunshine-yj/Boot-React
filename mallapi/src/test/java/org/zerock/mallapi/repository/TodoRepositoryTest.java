@@ -15,7 +15,7 @@ import lombok.extern.log4j.Log4j2;
 
 @SpringBootTest
 @Log4j2
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class) // @Order 숫자 순서대로 실행
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TodoRepositoryTests {
 
     @Autowired
