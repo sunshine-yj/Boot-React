@@ -2,7 +2,10 @@ package org.zerock.mallapi.repository;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
@@ -12,6 +15,7 @@ import lombok.extern.log4j.Log4j2;
 
 @SpringBootTest
 @Log4j2
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class) // @Order 숫자 순서대로 실행
 class TodoRepositoryTests {
 
     @Autowired
@@ -52,16 +56,16 @@ class TodoRepositoryTests {
     }
 
     @Test
-    void testDelete() {
-        todoRepository.deleteById(1L);
-    }
-
-    @Test
     void testPaging() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("tno").descending());
         Page<Todo> result = todoRepository.findAll(pageable);
 
         log.info("total = {}", result.getTotalElements());
         result.getContent().forEach(log::info);
+    }
+
+    @Test
+    void testDelete() {
+        todoRepository.deleteById(1L);
     }
 }

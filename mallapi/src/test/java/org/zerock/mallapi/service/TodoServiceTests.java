@@ -1,7 +1,10 @@
 package org.zerock.mallapi.service;
 
 import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.zerock.mallapi.dto.TodoDTO;
@@ -10,12 +13,14 @@ import java.time.LocalDate;
 
 @SpringBootTest
 @Log4j2
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class) // @Order 숫자 순서대로 실행
 class TodoServiceTests {
 
     @Autowired
     private TodoService todoService;
 
     @Test
+    @Order(1)
     void testRegister() {
         TodoDTO dto = TodoDTO.builder()
                 .title("서비스 테스트")
@@ -26,6 +31,7 @@ class TodoServiceTests {
     }
 
     @Test
+    @Order(2)
     void testGet() {
         log.info(todoService.get(101L));
     }
