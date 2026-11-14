@@ -9,7 +9,7 @@ const inputClass = "w-4/5 rounded border border-neutral-400 p-4 shadow-sm";
 
 function AddComponent() {
     const [todo, setTodo] = useState<TodoAdd>({ ...initState });
-    const [result, setResult] = useState<number | null>(null); // 새 번호
+    const [result, setResult] = useState<number | null>(null);
     const { moveToList } = useCustomMove();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
