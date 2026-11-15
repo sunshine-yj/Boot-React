@@ -10,11 +10,6 @@ import org.zerock.mallapi.controller.formatter.LocalDateFormatter;
 public class CustomServletConfig implements WebMvcConfigurer {
 
     @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addFormatter(new LocalDateFormatter());
-    }
-
-    @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
