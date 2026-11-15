@@ -24,11 +24,11 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        if ("OPTIONS".equals(request.getMethod())) return true;   // CORS preflight
+        if ("OPTIONS".equals(request.getMethod())) return true;
 
         String path = request.getRequestURI();
-        if (path.startsWith("/api/member/")) return true;          // 로그인·갱신·카카오
-        if (path.startsWith("/api/products/view/")) return true;   // <img>는 헤더를 못 보냄
+        if (path.startsWith("/api/member/")) return true;
+        if (path.startsWith("/api/products/view/")) return true;
         return false;
     }
 
@@ -38,7 +38,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         try {
-            String accessToken = authHeader.substring(7);              // "Bearer " 다음부터
+            String accessToken = authHeader.substring(7);
             Map<String, Object> claims = JWTUtil.validateToken(accessToken);
 
             @SuppressWarnings("unchecked")
@@ -54,7 +54,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
                     new UsernamePasswordAuthenticationToken(memberDTO, memberDTO.getPw(), memberDTO.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-            filterChain.doFilter(request, response);                   // 통과
+            filterChain.doFilter(request, response);
 
         } catch (Exception e) {
             log.error("JWT check error: {}", e.getMessage());
