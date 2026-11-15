@@ -25,11 +25,11 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/")
-    public Map<String, String> register(ProductDTO productDTO) {
+    public Map<String, Long> register(ProductDTO productDTO) {
         List<String> names = fileUtil.saveFiles(productDTO.getFiles());
         productDTO.setUploadFileNames(names);
-        log.info("saved: {}", names);
-        return Map.of("RESULT", "SUCCESS");
+        Long pno = productService.register(productDTO);
+        return Map.of("RESULT", pno);
     }
 
     @GetMapping("/view/{fileName}")

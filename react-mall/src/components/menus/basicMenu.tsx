@@ -4,6 +4,7 @@ const menus = [
     { to: "/", label: "Main" },
     { to: "/about", label: "About" },
     { to: "/todo/", label: "Todo" },
+    { to: "/products/", label: "Products" },
 ];
 
 function BasicMenu() {
