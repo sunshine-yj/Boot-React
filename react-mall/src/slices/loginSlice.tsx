@@ -32,7 +32,11 @@ const loginSlice = createSlice({
     name: "LoginSlice",
     initialState: loadMemberCookie() || initState,
     reducers: {
-        save: (_state, action: PayloadAction<LoginInfo>) => action.payload,
+        save: (_state, action: PayloadAction<LoginInfo>) => {
+            const newState = { ...action.payload, status: "saved" };
+            setCookie("member", JSON.stringify(newState), 1);
+            return newState;
+        },
 
         logout: () => {
             removeCookie("member");
