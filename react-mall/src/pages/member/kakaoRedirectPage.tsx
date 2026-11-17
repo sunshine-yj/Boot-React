@@ -4,12 +4,15 @@ import { useNavigate, useSearchParams } from "react-router";
 import { getAccessToken, getMemberWithAccessToken } from "../../api/kakaoApi";
 import { save } from "../../slices/loginSlice";
 import type { AppDispatch } from "../../store";
+import useZustandMember from "../../zstore/useZustandMember";
+
 
 function KakaoRedirectPage() {
     const [searchParams] = useSearchParams();
     const authCode = searchParams.get("code");
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+    const save = useZustandMember((s) => s.save);
 
     useEffect(() => {
         if (!authCode) return;
@@ -17,7 +20,7 @@ function KakaoRedirectPage() {
         getAccessToken(authCode)
             .then((kakaoToken) => getMemberWithAccessToken(kakaoToken))
             .then((memberInfo) => {
-                dispatch(save(memberInfo));
+                save(memberInfo);
                 navigate(memberInfo.social ? "/member/modify" : "/", { replace: true });
             })
             .catch((e) => {

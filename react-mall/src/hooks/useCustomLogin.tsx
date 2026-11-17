@@ -1,21 +1,20 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router";
-import type { AppDispatch, RootState } from "../store";
-import { loginPostAsync, logout } from "../slices/loginSlice";
-import { clearCart } from "../slices/cartSlice";
+import useZustandMember from "../zstore/useZustandMember";
+import useZustandCart from "../zstore/useZustandCart";
 
 function useCustomLogin() {
-    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+    const { member, status, login, logout } = useZustandMember();
+    const clearCart = useZustandCart((s) => s.clear);
 
-    const loginState = useSelector((state: RootState) => state.loginSlice);
-    const loginStatus = loginState.status;
-    const isLogin = !!loginState.email;
+    const loginState = member;
+    const loginStatus = status;
+    const isLogin = !!member.email;
 
-    const doLogin = (email: string, pw: string) => dispatch(loginPostAsync({ email, pw }));
+    const doLogin = (email: string, pw: string) => login(email, pw);
     const doLogout = () => {
-        dispatch(clearCart());
-        dispatch(logout());
+        clearCart();
+        logout();
     };
 
     const moveToLogin = () => navigate("/member/login");

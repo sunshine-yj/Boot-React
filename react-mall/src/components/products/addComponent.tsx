@@ -1,42 +1,45 @@
-import axios from "axios";
-import { useActionState, type ReactNode } from "react";
+import { type FormEvent, type ReactNode } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postProduct } from "../../api/productsApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import PendingModal from "../common/pendingModal";
 import ResultModal from "../common/resultModal";
 
-const initState: ProductAddResult = { result: 0 };
-
-const addAsyncAction = async (_state: ProductAddResult, formData: FormData): Promise<ProductAddResult> => {
-    const pname = formData.get("pname") as string;
-    if (!pname) return { error: "Insert Product Name" };
-
-    const res = await axios.post("http://localhost:8080/api/products/", formData);
-    return { result: res.data.RESULT };
-};
 const inputClass = "w-4/5 rounded border border-neutral-300 p-4 shadow-sm";
 
 function AddComponent() {
-    const [state, action, isPending] = useActionState(addAsyncAction, initState);
     const { moveToList } = useCustomMove();
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation({
+        mutationFn: (formData: FormData) => postProduct(formData),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["products/list"], exact: false });
+        },
+    });
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        mutation.mutate(new FormData(e.currentTarget));
+    };
 
     return (
         <div className="m-2 mt-10 border-2 border-sky-200 p-4">
-            {isPending && <PendingModal />}
-            {!!state.result && (
+            {mutation.isPending && <PendingModal />}
+            {mutation.data?.RESULT && (
                 <ResultModal
                     title="상품 추가 결과"
-                    content={`새로운 ${state.result}번 상품 추가됨`}
+                    content={`새로운 ${mutation.data.RESULT}번 상품 추가됨`}
                     callbackFn={() => moveToList()}
                 />
             )}
-            {state.error && <div className="text-red-600">{state.error}</div>}
+            {mutation.isError && <div className="text-red-600">등록 실패</div>}
 
-            <form action={action}>
+            <form onSubmit={handleSubmit}>
                 <Field label="Product Name"><input className={inputClass} name="pname" required /></Field>
                 <Field label="Desc"><textarea className={`${inputClass} resize-y`} name="pdesc" rows={4} required /></Field>
                 <Field label="Price"><input className={inputClass} name="price" type="number" required /></Field>
                 <Field label="Files"><input className={inputClass} name="files" type="file" multiple accept="image/*" /></Field>
-
                 <div className="flex justify-end p-4">
                     <button type="submit" className="w-36 rounded bg-blue-500 p-4 text-xl text-white">ADD</button>
                 </div>

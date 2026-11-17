@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_SERVER_HOST } from "./todoApi";
 
 const rest_api_key = import.meta.env.VITE_KAKAO_REST_KEY;
-const client_secret = import.meta.env.VITE_KAKAO_CLIENT_SECRET;   // 보안 활성화 시
+const client_secret = import.meta.env.VITE_KAKAO_CLIENT_SECRET;
 
 const redirect_uri = "http://localhost:5173/member/kakao";
 const auth_code_path = "https://kauth.kakao.com/oauth/authorize";

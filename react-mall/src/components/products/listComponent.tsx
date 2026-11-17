@@ -1,9 +1,20 @@
 import { imageUrl } from "../../api/productsApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import PageComponent from "../common/pageComponent";
+import { useQueryClient } from "@tanstack/react-query";
+
 
 function ListComponent({ serverData }: { serverData: PageResponseDTO<ProductDTO> }) {
-    const { moveToRead, moveToList } = useCustomMove();
+    const { moveToRead, moveToList, page, size } = useCustomMove();
+    const queryClient = useQueryClient();
+
+    const moveCheckPage = (pageParam: PageParam) => {
+        if (Number(pageParam.page) === page) {
+            if (!window.confirm("다시 페이지를 호출하시겠습니까?")) return;
+            queryClient.invalidateQueries({ queryKey: ["products/list", page, size] });
+        }
+        moveToList(pageParam);
+    };
 
     return (
         <div className="mx-2 mt-10 border-2 border-blue-100">
@@ -12,8 +23,7 @@ function ListComponent({ serverData }: { serverData: PageResponseDTO<ProductDTO>
                     <div
                         key={product.pno}
                         className="cursor-pointer rounded border-2 border-gray-200 p-2 shadow-md hover:border-blue-300"
-                        onClick={() => moveToRead(product.pno)}
-                    >
+                        onClick={() => moveToRead(product.pno)}>
                         <div className="p-2 text-2xl font-extrabold">{product.pno}</div>
                         <img
                             alt={product.pname}
