@@ -1,5 +1,6 @@
 import { Outlet } from "react-router";
 import BasicMenu from "../components/menus/basicMenu";
+import CartComponent from "../components/menus/cartComponent";
 
 function BasicLayout() {
     return (
@@ -10,8 +11,8 @@ function BasicLayout() {
                 <main className="bg-sky-300 px-5 py-5 md:w-3/4">
                     <Outlet />
                 </main>
-                <aside className="bg-green-300 px-5 py-10 md:w-1/4">
-                    <h1 className="text-2xl md:text-4xl">Sidebar</h1>
+                <aside className="bg-green-300 px-5 py-5 md:w-1/4">
+                    <CartComponent />
                 </aside>
             </div>
         </>
